@@ -1,2 +1,2 @@
 development:
-  database: db/app_dev.sql
+  database: db/app_dev.db
