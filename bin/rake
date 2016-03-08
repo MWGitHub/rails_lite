@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+require 'yaml'
+require 'optparse'
+require 'ostruct'
+
+class Rake
+  ROOT_FOLDER = File.join(File.dirname(__FILE__), '..')
+
+  def self.db_create
+    config_path = File.join(ROOT_FOLDER, 'config', 'database.yml')
+    config = YAML.load_file(config_path)
+
+    puts 'Creating the database'
+    seed_path = File.join(ROOT_FOLDER, 'db', 'seed.sql')
+    db_path = File.join(ROOT_FOLDER, config['development']['database'])
+    system "rm #{db_path}"
+    success = system "cat #{seed_path} | sqlite3 #{db_path}"
+    if success
+      puts 'Database created'
+    else
+      puts 'Failed to create database'
+    end
+  end
+
+  def self.parse(args)
+    options = OpenStruct.new
+
+    opts_parser = OptionParser.new do |opts|
+      opts.banner = "Usage: rake [options]"
+    end.parse!
+
+    commands = ARGV.each do |command|
+      case command
+      when 'db:create'
+        db_create
+      end
+    end
+  end
+end
+
+Rake.parse(ARGV)

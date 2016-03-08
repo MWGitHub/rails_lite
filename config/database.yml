@@ -1,0 +1,2 @@
+development:
+  database: db/app_dev.sql
