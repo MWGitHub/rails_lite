@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'rack'
 require_relative '../lib/controller_base'
 
