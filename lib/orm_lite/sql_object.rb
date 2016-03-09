@@ -1,5 +1,3 @@
-require 'active_support/inflector'
-
 # NB: the attr_accessor we wrote in phase 0 is NOT used in the rest
 # of this project. It was only a warm up.
 

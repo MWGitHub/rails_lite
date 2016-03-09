@@ -1,6 +1,3 @@
-require 'sqlite3'
-require 'yaml'
-
 class DBConnection
   ROOT_FOLDER = File.join(File.dirname(__FILE__), '..', '..')
 

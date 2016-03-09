@@ -56,6 +56,7 @@ class Router
 
   # should return the route that matches this request
   def match(req)
+    # byebug
     @routes.find { |route| route.matches?(req) }
   end
 
@@ -68,5 +69,16 @@ class Router
       res.write('Page not found')
       res.status = 404
     end
+  end
+
+  def self.patternize(string)
+    output = string.split('/').map do |part|
+      if part[0] == ':'
+        "(?<#{part[1..-1]}>\\w+)"
+      else
+        part
+      end
+    end.join('/')
+    Regexp.new("^#{output}$")
   end
 end

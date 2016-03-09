@@ -1,5 +1,3 @@
-require 'active_support/inflector'
-
 # Phase IIIa
 class AssocOptions
   attr_accessor(
