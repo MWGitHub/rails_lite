@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 require_relative '../requirer'
 
+class Cat
+  attr_accessor :name, :owner
+end
 
 $cats = [
   { id: 1, name: "Curie" },
@@ -23,19 +26,37 @@ class StatusesController < ControllerBase
   end
 end
 
-class Cats2Controller < ControllerBase
+class CatsController < ControllerBase
   def index
-    render_content($cats.to_json, "application/json")
+    session[:test] = 'test-session'
+    flash[:errors] = ['one', 'two']
+
+    session["count"] ||= 0
+    session["count"] += 1
+    render('index')
+  end
+
+  def new
+    @cat = Cat.new
+
+    session["count"] ||= 0
+    session["count"] += 1
+    
+    render('new')
   end
 end
 
 router = Routes.new
 
-app = Proc.new do |env|
+lite_app = Proc.new do |env|
   req = Rack::Request.new(env)
   res = Rack::Response.new
   router.run(req, res)
   res.finish
+end
+
+app = Rack::Builder.new do
+  run lite_app
 end
 
 Rack::Server.start(

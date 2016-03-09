@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:default, :development, :test)
 
+require 'json'
 require 'yaml'
 require 'active_support/inflector'
 

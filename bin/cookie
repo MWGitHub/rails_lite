@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'cgi'
+require 'active_support'
+require 'action_controller'
+
+def decrypt_session_cookie(cookie, key)
+  cookie = CGI::unescape(cookie)
+
+  # Default values for Rails 4 apps
+  key_iter_num = 1000
+  key_size     = 64
+  salt         = "encrypted cookie"
+  signed_salt  = "signed encrypted cookie"
+
+  key_generator = ActiveSupport::KeyGenerator.new(key, iterations: key_iter_num)
+  secret = key_generator.generate_key(salt)
+  sign_secret = key_generator.generate_key(signed_salt)
+
+  encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret, serializer: ActiveSupport::MessageEncryptor::NullSerializer)
+  puts Marshal.load(encryptor.decrypt_and_verify(cookie))
+end
+
+key = "b58f9f1ced543625305e236119df6a2b6aae7b6ca9a552ba4f1a67af531b63a99719c8b2ce20526983779e3fc80ddd65d93fc0f4eb5459346dcaaaebf9358acb"
+
+puts "Enter a cookie"
+cookie = gets.chomp
+
+p decrypt_session_cookie(cookie, key)
