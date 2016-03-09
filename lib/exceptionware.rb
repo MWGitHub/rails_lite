@@ -10,7 +10,7 @@ class Exceptionware
     rescue StandardError => e
       @error = e
 
-      location = e.backtrace[1].split(' ')[0].split(':')
+      location = e.backtrace[0].split(' ')[0].split(':')
       file = location[0]
       error_line = location[1].to_i
       buffer = 10

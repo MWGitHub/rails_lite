@@ -41,7 +41,6 @@ class CatsController < ControllerBase
   def other
     flash[:errors] = ['other', 'normal error']
 
-    raise
     render :other
     # redirect_to '/cats/new'
   end
@@ -53,6 +52,10 @@ class CatsController < ControllerBase
     session["count"] += 1
 
     render :new
+  end
+
+  def crash
+    raise
   end
 end
 
@@ -67,6 +70,7 @@ end
 
 app = Rack::Builder.new do
   use Exceptionware
+  use Staticware
   run lite_app
 end.to_app
 
