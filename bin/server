@@ -29,11 +29,20 @@ end
 class CatsController < ControllerBase
   def index
     session[:test] = 'test-session'
-    flash[:errors] = ['one', 'two']
+    # flash[:errors] = ['one', 'two']
 
     session["count"] ||= 0
     session["count"] += 1
-    render('index')
+    flash.now[:errors] = ['now', 'flash']
+
+    render :index
+  end
+
+  def other
+    flash[:errors] = ['other', 'normal error']
+
+    render :other
+    # redirect_to '/cats/new'
   end
 
   def new
@@ -41,8 +50,8 @@ class CatsController < ControllerBase
 
     session["count"] ||= 0
     session["count"] += 1
-    
-    render('new')
+
+    render :new
   end
 end
 
