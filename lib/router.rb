@@ -79,6 +79,6 @@ class Router
         part
       end
     end.join('/')
-    Regexp.new("^#{output}$")
+    Regexp.new("^#{output}\/{0,1}$")
   end
 end
